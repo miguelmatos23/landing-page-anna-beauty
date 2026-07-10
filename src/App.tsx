@@ -58,36 +58,272 @@ function useStaggeredReveal(count: number, threshold = 0.15, ready = true) {
     transition: `opacity 0.9s cubic-bezier(0.16,1,0.3,1) ${i * 150}ms, transform 0.9s cubic-bezier(0.16,1,0.3,1) ${i * 150}ms`,
   });
 
-  return { setRef, getAnimStyle };
+  const getTextRevealStyle = (i: number): React.CSSProperties => ({
+    display: 'block',
+    transform: visible ? 'translateY(0)' : 'translateY(100%)',
+    transition: `transform 1.2s cubic-bezier(0.16,1,0.3,1) ${i * 150}ms`,
+  });
+
+  return { setRef, getAnimStyle, getTextRevealStyle };
+}
+
+function useParallax(speed = -0.08) {
+  const [offset, setOffset] = useState(0);
+  const ref = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (!ref.current) return;
+      const rect = ref.current.getBoundingClientRect();
+      const scrolled = window.scrollY;
+      const elementTop = rect.top + scrolled;
+      const viewportHeight = window.innerHeight;
+      
+      if (rect.top < viewportHeight && rect.bottom > 0) {
+        const relativeScroll = scrolled - (elementTop - viewportHeight);
+        setOffset(relativeScroll * speed);
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    handleScroll();
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [speed]);
+
+  return { ref, style: { transform: `translateY(${offset}px)` } };
 }
 
 function SplashScreen({ onComplete }: { onComplete: () => void }) {
   const [count, setCount] = useState(0);
-  const [exiting, setExiting] = useState(false);
+  const [phase, setPhase] = useState<'loading' | 'blink' | 'opening' | 'done'>('loading');
   const cb = useRef(onComplete); cb.current = onComplete;
 
   useEffect(() => {
     let c = 0;
     const t = setInterval(() => {
-      c += 2;
+      const increment = c > 85 ? 2 : 4;
+      c += increment;
       if (c > 100) c = 100;
       setCount(c);
       if (c >= 100) {
         clearInterval(t);
-        setTimeout(() => setExiting(true), 300);
-        setTimeout(() => cb.current(), 1000);
+        setTimeout(() => setPhase('blink'), 200);
+        setTimeout(() => setPhase('loading'), 350);
+        setTimeout(() => setPhase('opening'), 500);
+        setTimeout(() => setPhase('done'), 1800);
+        setTimeout(() => cb.current(), 1900);
       }
     }, 15);
     return () => clearInterval(t);
   }, []);
 
+  const isOpen = phase === 'opening';
+  const isBlink = phase === 'blink';
+
+  // Controle da abertura vertical das pálpebras (porcentagem do eixo Y da elipse)
+  const upperY = isOpen ? '0%' : isBlink ? '48%' : '50%';
+  const lowerY = isOpen ? '0%' : isBlink ? '48%' : '50%';
+
   return (
-    <div className={`fixed inset-0 z-[100] bg-lux-darker flex flex-col items-center justify-center transition-opacity duration-1000 ${exiting ? 'opacity-0' : ''}`}>
-      <span className="font-serif text-5xl md:text-7xl italic text-lux-gold tracking-widest animate-pulse-slow">{count}%</span>
-      <div className="w-48 h-1 bg-white/10 mt-8 rounded-full overflow-hidden">
-        <div className="h-full bg-gradient-to-r from-lux-goldLight via-lux-gold to-lux-goldLight transition-all duration-75" style={{ width: `${count}%` }} />
-      </div>
-    </div>
+    <>
+      {phase !== 'done' && (
+        <div className="fixed inset-0 z-[100]" style={{ pointerEvents: phase === 'opening' ? 'none' : 'auto' }}>
+
+          {/* ===== CAMADA CENTRAL: Íris + Pupila do Olho (visível durante loading e blink) ===== */}
+          <div
+            className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-[101]"
+            style={{
+              opacity: isOpen ? 0 : 1,
+              transform: `translate(-50%, -50%) scale(${isOpen ? 1.5 : 1})`,
+              transition: 'opacity 0.6s ease, transform 1s ease',
+            }}
+          >
+            <svg width="120" height="120" viewBox="0 0 120 120" className="animate-pulse-slow">
+              {/* Íris externa */}
+              <circle cx="60" cy="60" r="55" fill="none" stroke="rgba(212,175,55,0.08)" strokeWidth="1" />
+              <circle cx="60" cy="60" r="45" fill="none" stroke="rgba(212,175,55,0.12)" strokeWidth="0.5" />
+              {/* Íris dourada com gradiente */}
+              <defs>
+                <radialGradient id="irisGrad" cx="50%" cy="50%" r="50%">
+                  <stop offset="0%" stopColor="#F3E5AB" stopOpacity="0.3" />
+                  <stop offset="40%" stopColor="#D4AF37" stopOpacity="0.15" />
+                  <stop offset="70%" stopColor="#AA7C11" stopOpacity="0.08" />
+                  <stop offset="100%" stopColor="transparent" stopOpacity="0" />
+                </radialGradient>
+              </defs>
+              <circle cx="60" cy="60" r="38" fill="url(#irisGrad)" />
+              {/* Fibras da íris */}
+              {Array.from({ length: 24 }).map((_, i) => {
+                const angle = (i * 15) * (Math.PI / 180);
+                const x1 = 60 + Math.cos(angle) * 16;
+                const y1 = 60 + Math.sin(angle) * 16;
+                const x2 = 60 + Math.cos(angle) * 36;
+                const y2 = 60 + Math.sin(angle) * 36;
+                return (
+                  <line key={`iris-fiber-${i}`} x1={x1} y1={y1} x2={x2} y2={y2} stroke="rgba(212,175,55,0.06)" strokeWidth="0.5" />
+                );
+              })}
+              {/* Pupila */}
+              <circle cx="60" cy="60" r="12" fill="rgba(10,9,8,0.7)" />
+              {/* Reflexo da pupila */}
+              <circle cx="52" cy="53" r="3" fill="rgba(243,229,171,0.25)" />
+            </svg>
+          </div>
+
+          {/* ===== PÁLPEBRA SUPERIOR ===== */}
+          <div
+            className="absolute inset-0 bg-lux-darker z-[102]"
+            style={{
+              clipPath: `ellipse(150% ${upperY} at 50% 0%)`,
+              transition: isBlink
+                ? 'clip-path 0.12s ease-in'
+                : isOpen
+                  ? 'clip-path 1.3s cubic-bezier(0.22, 1, 0.36, 1)'
+                  : 'clip-path 0.15s ease-out',
+            }}
+          >
+            {/* Linha da pálpebra (delineador dourado sutil) */}
+            <div
+              className="absolute bottom-0 left-0 w-full h-[1px]"
+              style={{
+                background: 'linear-gradient(to right, transparent 10%, rgba(212,175,55,0.3) 30%, rgba(212,175,55,0.5) 50%, rgba(212,175,55,0.3) 70%, transparent 90%)',
+              }}
+            />
+
+            {/* Cílios Superiores - SVG curvos orgânicos */}
+            <svg
+              className="absolute bottom-[-1px] left-1/2 -translate-x-1/2 overflow-visible"
+              width="400" height="60" viewBox="0 0 400 60"
+              style={{ opacity: isOpen ? 0 : 1, transition: 'opacity 0.5s ease' }}
+            >
+              {Array.from({ length: 50 }).map((_, i) => {
+                const x = 40 + i * 6.5;
+                const dist = Math.abs(x - 200);
+                const len = Math.max(10, 45 - dist * 0.18);
+                const curve = (x - 200) * 0.15;
+                const thickness = dist < 60 ? 1.2 : 0.8;
+                return (
+                  <path
+                    key={`lash-${i}`}
+                    d={`M ${x} 0 Q ${x + curve * 0.5} ${len * 0.5} ${x + curve} ${len}`}
+                    stroke="rgba(212,175,55,0.35)"
+                    strokeWidth={thickness}
+                    fill="none"
+                    strokeLinecap="round"
+                  />
+                );
+              })}
+            </svg>
+          </div>
+
+          {/* ===== PÁLPEBRA INFERIOR ===== */}
+          <div
+            className="absolute inset-0 bg-lux-darker z-[102]"
+            style={{
+              clipPath: `ellipse(150% ${lowerY} at 50% 100%)`,
+              transition: isBlink
+                ? 'clip-path 0.12s ease-in'
+                : isOpen
+                  ? 'clip-path 1.3s cubic-bezier(0.22, 1, 0.36, 1)'
+                  : 'clip-path 0.15s ease-out',
+            }}
+          >
+            {/* Linha da pálpebra inferior */}
+            <div
+              className="absolute top-0 left-0 w-full h-[1px]"
+              style={{
+                background: 'linear-gradient(to right, transparent 15%, rgba(212,175,55,0.2) 35%, rgba(212,175,55,0.35) 50%, rgba(212,175,55,0.2) 65%, transparent 85%)',
+              }}
+            />
+
+            {/* Cílios Inferiores - SVG curvos menores */}
+            <svg
+              className="absolute top-[-1px] left-1/2 -translate-x-1/2 overflow-visible"
+              width="300" height="25" viewBox="0 0 300 25"
+              style={{ opacity: isOpen ? 0 : 1, transition: 'opacity 0.5s ease' }}
+            >
+              {Array.from({ length: 35 }).map((_, i) => {
+                const x = 30 + i * 7;
+                const dist = Math.abs(x - 150);
+                const len = Math.max(5, 18 - dist * 0.1);
+                const curve = (x - 150) * 0.08;
+                return (
+                  <path
+                    key={`lash-b-${i}`}
+                    d={`M ${x} 0 Q ${x + curve * 0.5} ${-len * 0.5} ${x + curve} ${-len}`}
+                    stroke="rgba(212,175,55,0.2)"
+                    strokeWidth="0.6"
+                    fill="none"
+                    strokeLinecap="round"
+                  />
+                );
+              })}
+            </svg>
+          </div>
+
+          {/* ===== CONTEÚDO DO CARREGADOR ===== */}
+          <div
+            className="absolute inset-0 flex flex-col items-center justify-center z-[103]"
+            style={{
+              opacity: isOpen ? 0 : 1,
+              transition: 'opacity 0.4s ease',
+            }}
+          >
+            {/* Partículas douradas */}
+            <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
+              {Array.from({ length: 12 }).map((_, idx) => {
+                const size = 1.2 + (idx % 3) * 0.8;
+                const left = 8 + (idx * 7.5) % 84;
+                const top = 15 + (idx * 11) % 70;
+                return (
+                  <div
+                    key={idx}
+                    className="absolute bg-lux-goldLight/20 rounded-full animate-float-particle"
+                    style={{
+                      width: `${size}px`,
+                      height: `${size}px`,
+                      left: `${left}%`,
+                      top: `${top}%`,
+                      animationDelay: `${idx * 0.4}s`,
+                      animationDuration: `${8 + (idx % 4) * 2}s`,
+                    }}
+                  />
+                );
+              })}
+            </div>
+
+            {/* Anel giratório sutil */}
+            <div className="absolute w-[280px] h-[280px] md:w-[320px] md:h-[320px] rounded-full border border-lux-gold/5 z-0" />
+            <div className="absolute w-[280px] h-[280px] md:w-[320px] md:h-[320px] rounded-full border-t border-r border-lux-gold/15 animate-spin z-0" style={{ animationDuration: '8s' }} />
+
+            {/* Marca */}
+            <div className="flex flex-col items-center mb-10 relative z-10 select-none animate-float">
+              <span className="font-serif text-4xl md:text-5xl lg:text-6xl text-white tracking-[0.25em] leading-none font-bold">ANNA</span>
+              <span className="font-serif text-3xl md:text-4xl lg:text-5xl italic text-lux-goldLight tracking-wide -mt-1">Beauty</span>
+              <div className="flex items-center gap-2 mt-4">
+                <div className="w-6 h-[1px] bg-lux-gold/30"></div>
+                <span className="text-[8px] md:text-[9px] tracking-[0.4em] uppercase text-lux-gold/60 font-light">Estúdio de Beleza</span>
+                <div className="w-6 h-[1px] bg-lux-gold/30"></div>
+              </div>
+            </div>
+
+            {/* Barra de Carregamento */}
+            <div className="w-48 md:w-56 flex flex-col items-center gap-3 relative z-10">
+              <div className="w-full h-[2px] bg-white/5 rounded-full overflow-hidden">
+                <div
+                  className="h-full bg-gradient-to-r from-lux-goldLight via-lux-gold to-lux-goldLight transition-all duration-100 ease-out"
+                  style={{ width: `${count}%` }}
+                />
+              </div>
+              <div className="flex items-center gap-1 font-serif text-[10px] md:text-xs text-lux-goldLight/70 tracking-[0.2em] uppercase font-light">
+                <span>Aguarde</span>
+                <span className="font-bold text-lux-gold tabular-nums">{count}%</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+    </>
   );
 }
 
@@ -127,7 +363,7 @@ function Navbar() {
             {navLinks.map(l => (
                <a key={l.label} href={l.href} className={`text-sm tracking-widest uppercase transition-all duration-300 hover:-translate-y-0.5 ${scrolled ? 'text-lux-dark/80 hover:text-lux-gold' : 'text-white/80 hover:text-lux-goldLight'}`}>{l.label}</a>
             ))}
-            <a href="https://wa.me/5521992279722?text=Olá!%20Gostaria%20de%20agendar%20um%20horário." target="_blank" rel="noopener noreferrer" className={`relative overflow-hidden px-8 py-3 rounded-full text-xs font-bold tracking-widest uppercase transition-all duration-500 border group ${scrolled ? 'bg-lux-gold text-lux-darker border-lux-gold hover:bg-[#AA7C11]' : 'bg-transparent text-white border-lux-gold hover:bg-lux-gold hover:text-lux-darker hover:border-lux-gold'}`}>
+            <a href="https://anna-beauty.vercel.app/" target="_blank" rel="noopener noreferrer" className={`relative overflow-hidden px-8 py-3 rounded-full text-xs font-bold tracking-widest uppercase transition-all duration-500 border group ${scrolled ? 'bg-lux-gold text-lux-darker border-lux-gold hover:bg-[#AA7C11]' : 'bg-transparent text-white border-lux-gold hover:bg-lux-gold hover:text-lux-darker hover:border-lux-gold'}`}>
               <span className="relative z-10">Agende aqui</span>
             </a>
           </div>
@@ -144,22 +380,22 @@ function Navbar() {
       <div className={`md:hidden fixed inset-0 z-40 ${isOpen ? 'pointer-events-auto' : 'pointer-events-none'}`}>
         <div className={`absolute inset-0 bg-lux-darker/60 backdrop-blur-md transition-opacity duration-500 ${isOpen ? 'opacity-100' : 'opacity-0'}`} onClick={() => setIsOpen(false)} />
         
-        {/* Painel do Menu Dark & Luxuoso */}
-        <div className={`absolute top-0 right-0 h-full w-[85%] bg-lux-darker shadow-2xl transition-transform duration-500 ease-[cubic-bezier(0.76,0,0.24,1)] ${isOpen ? 'translate-x-0' : 'translate-x-full'}`}>
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,_var(--tw-gradient-stops))] from-lux-gold/10 via-lux-darker to-lux-darker pointer-events-none" />
+        {/* Painel do Menu com fundo Branco/Claro */}
+        <div className={`absolute top-0 right-0 h-full w-[85%] bg-lux-light shadow-2xl transition-transform duration-500 ease-[cubic-bezier(0.76,0,0.24,1)] ${isOpen ? 'translate-x-0' : 'translate-x-full'}`}>
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,_var(--tw-gradient-stops))] from-lux-gold/5 via-lux-light to-lux-light pointer-events-none" />
           
           <div className="flex flex-col justify-center h-full px-10 gap-8 relative z-10">
             {navLinks.map((l, i) => (
               <a key={l.label} href={l.href} onClick={() => setIsOpen(false)}
-                className="font-serif text-4xl text-white/90 hover:text-lux-goldLight transition-colors relative group w-max"
+                className="font-serif text-4xl text-lux-dark hover:text-lux-gold transition-colors relative group w-max"
                 style={{ opacity: isOpen ? 1 : 0, transform: isOpen ? 'translateX(0)' : 'translateX(32px)', transition: `all 500ms cubic-bezier(0.76,0,0.24,1) ${100 + i * 60}ms` }}>
                 <span className="relative z-10">{l.label}</span>
-                <span className="absolute left-0 bottom-1 w-0 h-[1px] bg-lux-goldLight transition-all duration-300 group-hover:w-full"></span>
+                <span className="absolute left-0 bottom-1 w-0 h-[1px] bg-lux-gold transition-all duration-300 group-hover:w-full"></span>
               </a>
             ))}
             
-            <a href="https://wa.me/5521992279722?text=Olá!%20Gostaria%20de%20agendar%20um%20horário." target="_blank" rel="noopener noreferrer" 
-              className="mt-8 px-10 py-4 bg-lux-gold text-lux-darker font-bold rounded-full border border-lux-gold text-sm tracking-widest uppercase text-center w-full sm:w-max shadow-[0_4px_25px_rgba(212,175,55,0.4)]"
+            <a href="https://anna-beauty.vercel.app/" target="_blank" rel="noopener noreferrer" 
+              className="mt-8 px-10 py-4 bg-lux-gold text-white font-bold rounded-full border border-lux-gold text-sm tracking-widest uppercase text-center w-full sm:w-max shadow-[0_4px_25px_rgba(212,175,55,0.3)]"
               style={{ opacity: isOpen ? 1 : 0, transition: `all 500ms ease 400ms` }}>
               Agende aqui
             </a>
@@ -201,7 +437,7 @@ function HeroSection({ ready }: { ready: boolean }) {
         </p>
 
         <div className="flex flex-col sm:flex-row items-center gap-4 w-full lg:w-max mt-12 md:mt-0" style={getAnimStyle(3)}>
-          <a href="https://wa.me/5521992279722?text=Olá! Gostaria de agendar um horário." target="_blank" rel="noopener noreferrer" className="relative group px-6 py-2.5 md:px-8 md:py-3 bg-transparent border border-lux-gold text-lux-goldLight rounded-full text-[10px] md:text-xs font-semibold tracking-widest uppercase overflow-hidden transition-all duration-500 shadow-[0_0_15px_rgba(212,175,55,0.2)] hover:shadow-[0_0_30px_rgba(212,175,55,0.4)] w-[80%] max-w-[220px] sm:max-w-none sm:w-auto text-center">
+          <a href="https://anna-beauty.vercel.app/" target="_blank" rel="noopener noreferrer" className="relative group px-6 py-2.5 md:px-8 md:py-3 bg-transparent border border-lux-gold text-lux-goldLight rounded-full text-[10px] md:text-xs font-semibold tracking-widest uppercase overflow-hidden transition-all duration-500 shadow-[0_0_15px_rgba(212,175,55,0.2)] hover:shadow-[0_0_30px_rgba(212,175,55,0.4)] w-[80%] max-w-[220px] sm:max-w-none sm:w-auto text-center">
             <div className="absolute inset-0 bg-gradient-to-r from-lux-gold to-lux-goldLight translate-y-full group-hover:translate-y-0 transition-transform duration-500 ease-out" />
             <span className="relative z-10 group-hover:text-lux-darker transition-colors duration-500">Agendar</span>
           </a>
@@ -221,7 +457,8 @@ function HeroSection({ ready }: { ready: boolean }) {
 }
 
 function AboutSection({ ready }: { ready: boolean }) {
-  const { setRef, getAnimStyle } = useStaggeredReveal(2, 0.2, ready);
+  const { setRef, getAnimStyle, getTextRevealStyle } = useStaggeredReveal(2, 0.2, ready);
+  const parallax = useParallax(-0.06);
 
   return (
     <section id="sobre" ref={setRef} className="relative w-full py-24 md:py-40 bg-lux-light overflow-hidden">
@@ -231,11 +468,24 @@ function AboutSection({ ready }: { ready: boolean }) {
       <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center gap-16 md:gap-24 relative z-10">
         
         <div className="w-full md:w-5/12" style={getAnimStyle(0)}>
+          {/* Container principal sem overflow-hidden para os elementos saírem da borda */}
           <div className="relative aspect-[3/4] w-full max-w-md mx-auto md:mr-auto group">
-            <div className="absolute inset-0 bg-lux-gold/20 translate-x-4 translate-y-4 rounded-t-[120px] rounded-b-[40px] transition-transform duration-500 group-hover:translate-x-6 group-hover:translate-y-6" />
-            <img src={ANNA_PHOTO_1} alt="Anna Beauty" className="relative z-10 w-full h-full object-cover object-top rounded-t-[120px] rounded-b-[40px] grayscale-[20%] group-hover:grayscale-0 transition-all duration-700" />
             
-            <div className="absolute -bottom-6 -right-6 w-32 h-32 rounded-full border border-lux-gold/40 flex items-center justify-center p-2 bg-lux-light/90 backdrop-blur-sm z-20 shadow-[0_10px_30px_rgba(0,0,0,0.05)]">
+            {/* Molde dourado de fundo (deslocado para fora) */}
+            <div className="absolute inset-0 bg-lux-gold/15 translate-x-6 translate-y-6 rounded-t-[120px] rounded-b-[40px] transition-transform duration-700 group-hover:translate-x-8 group-hover:translate-y-8 z-0 shadow-md" />
+            
+            {/* Wrapper da imagem com overflow-hidden para o efeito parallax */}
+            <div ref={parallax.ref} className="relative w-full h-full overflow-hidden rounded-t-[120px] rounded-b-[40px] z-10 shadow-2xl transition-transform duration-700 group-hover:-translate-y-2 group-hover:-translate-x-2">
+              <img 
+                src={ANNA_PHOTO_1} 
+                alt="Anna Beauty" 
+                style={parallax.style} 
+                className="relative z-10 w-full h-[120%] -top-[10%] object-cover object-top rounded-t-[120px] rounded-b-[40px] grayscale-[20%] group-hover:grayscale-0 transition-all duration-700 scale-110" 
+              />
+            </div>
+            
+            {/* Selo giratório posicionado completamente fora do molde */}
+            <div className="absolute -bottom-8 -right-8 w-36 h-36 rounded-full border border-lux-gold/40 flex items-center justify-center p-2 bg-lux-light/95 backdrop-blur-sm z-20 shadow-[0_15px_30px_rgba(212,175,55,0.15)] group-hover:scale-110 transition-transform duration-500">
               <svg viewBox="0 0 100 100" className="w-full h-full animate-[spin_15s_linear_infinite]">
                 <path id="curve" d="M 50, 50 m -37, 0 a 37,37 0 1,1 74,0 a 37,37 0 1,1 -74,0" fill="transparent" />
                 <text className="text-[11.5px] font-bold tracking-widest uppercase fill-lux-gold"><textPath href="#curve">Anna Beauty • Especialista •</textPath></text>
@@ -244,18 +494,20 @@ function AboutSection({ ready }: { ready: boolean }) {
           </div>
         </div>
 
-        <div className="w-full md:w-7/12" style={getAnimStyle(1)}>
-          <span className="text-lux-gold tracking-[0.2em] uppercase text-xs font-bold block mb-4 flex items-center gap-3">
+        <div className="w-full md:w-7/12">
+          <span className="text-lux-gold tracking-[0.2em] uppercase text-xs font-bold block mb-4 flex items-center gap-3" style={getAnimStyle(0)}>
             <span className="w-8 h-[1px] bg-lux-gold"></span> Sobre Mim
           </span>
-          <h2 className="font-serif text-4xl md:text-5xl lg:text-6xl text-transparent bg-clip-text bg-gradient-to-r from-[#D4AF37] via-[#AA7C11] to-[#F3E5AB] animate-shimmer leading-[1.1] mb-8" style={{ backgroundSize: '200% auto' }}>
-            Elevando a sua autoestima através de um <span className="italic text-lux-dark">olhar sob medida.</span>
-          </h2>
-          <div className="space-y-6 text-lux-gray text-base md:text-lg max-w-xl font-light">
+          <div className="overflow-hidden mb-8">
+            <h2 className="font-serif text-4xl md:text-5xl lg:text-6xl text-transparent bg-clip-text bg-gradient-to-r from-[#D4AF37] via-[#AA7C11] to-[#F3E5AB] animate-shimmer leading-[1.1]" style={{ ...getTextRevealStyle(1), transition: 'transform 2.8s cubic-bezier(0.16, 1, 0.3, 1) 300ms', backgroundSize: '200% auto' }}>
+              Elevando a sua autoestima através de um <span className="italic text-lux-dark">olhar sob medida.</span>
+            </h2>
+          </div>
+          <div className="space-y-6 text-lux-gray text-base md:text-lg max-w-xl font-light" style={getAnimStyle(2)}>
             <p>Com anos de experiência e dedicação exclusiva ao Lash Design, desenvolvi técnicas que unem naturalidade, saúde dos fios e um acabamento impecável.</p>
             <p>Meu propósito não é apenas alongar cílios, mas sim realçar a beleza única de cada mulher que senta na minha maca, proporcionando um momento de cuidado e puro luxo.</p>
           </div>
-          <button className="mt-12 group flex items-center gap-4 text-lux-dark font-bold tracking-[0.2em] uppercase text-xs hover:text-lux-gold transition-colors">
+          <button className="mt-12 group flex items-center gap-4 text-lux-dark font-bold tracking-[0.2em] uppercase text-xs hover:text-lux-gold transition-colors" style={getAnimStyle(3)}>
             <span>Conheça Minha Trajetória</span>
             <div className="w-12 h-[1px] bg-lux-dark transition-all duration-300 group-hover:w-20 group-hover:bg-lux-gold" />
           </button>
@@ -472,7 +724,7 @@ function ServicesSection({ ready }: { ready: boolean }) {
                     return (
                       <a 
                         key={i} 
-                        href={`https://api.whatsapp.com/send?phone=5521992279722&text=Ol%C3%A1!%20Gostaria%20de%20agendar%20o%20servi%C3%A7o%20de%20${encodeURIComponent(svc.name)}.`}
+                        href="https://anna-beauty.vercel.app/"
                         target="_blank"
                         rel="noopener noreferrer"
                         className="group py-6 border-b border-lux-gold/10 flex flex-col md:flex-row md:items-center justify-between gap-4 cursor-pointer hover:bg-white hover:shadow-[0_10px_30px_rgba(212,175,55,0.05)] transition-all duration-500 px-6 -mx-6 rounded-xl"
@@ -526,20 +778,21 @@ function ServicesSection({ ready }: { ready: boolean }) {
 
 function LocationSection({ ready }: { ready: boolean }) {
   const { setRef, getAnimStyle } = useStaggeredReveal(2, 0.2, ready);
+  const studioParallax = useParallax(-0.05);
 
   return (
     <section id="localizacao" ref={setRef} className="w-full bg-lux-light relative overflow-hidden text-lux-darker border-t border-lux-gold/10">
       <div className="flex flex-col-reverse lg:flex-row min-h-screen">
         {/* Imagem do Estúdio (Esquerda no Desktop, Embaixo no Mobile) */}
-        <div style={getAnimStyle(0)} className="w-full lg:w-1/2 relative min-h-[50vh] lg:min-h-screen">
-          <div className="w-full h-full relative overflow-hidden min-h-[50vh] lg:min-h-screen">
-             <img src={STUDIO_PHOTO} alt="Nosso Estúdio" className="absolute inset-0 w-full h-full object-cover" />
+        <div style={getAnimStyle(0)} className="w-full lg:w-1/2 relative min-h-[50vh] lg:min-h-screen overflow-hidden">
+          <div ref={studioParallax.ref} className="w-full h-full relative overflow-hidden min-h-[50vh] lg:min-h-screen">
+             <img src={STUDIO_PHOTO} alt="Nosso Estúdio" style={studioParallax.style} className="absolute -top-[10%] left-0 w-full h-[120%] object-cover scale-110" />
              {/* Sombra escura na base para o texto do estúdio e fade na direita no desktop */}
-             <div className="absolute inset-0 bg-gradient-to-t from-lux-darker/90 via-lux-darker/20 to-transparent lg:bg-gradient-to-r lg:from-transparent lg:to-lux-light/100 pointer-events-none" />
+             <div className="absolute inset-0 bg-gradient-to-t from-lux-darker/90 via-lux-darker/20 to-transparent lg:bg-gradient-to-r lg:from-transparent lg:to-lux-light/100 pointer-events-none z-10" />
              {/* Borda degradê suave no topo apenas no mobile para fundir com a seção branca */}
-             <div className="absolute inset-x-0 top-0 h-48 bg-gradient-to-b from-lux-light to-transparent lg:hidden pointer-events-none" />
+             <div className="absolute inset-x-0 top-0 h-48 bg-gradient-to-b from-lux-light to-transparent lg:hidden pointer-events-none z-10" />
              
-             <div className="absolute bottom-10 left-6 md:left-12 text-white drop-shadow-[0_2px_10px_rgba(0,0,0,0.8)] pr-6 lg:pr-12">
+             <div className="absolute bottom-10 left-6 md:left-12 text-white drop-shadow-[0_2px_10px_rgba(0,0,0,0.8)] pr-6 lg:pr-12 z-20">
                <h3 className="font-serif text-3xl md:text-4xl mb-3 text-lux-goldLight">O ambiente perfeito<br/>para você</h3>
                <p className="font-light text-sm md:text-base max-w-md text-white/90">
                  Projetado para o seu máximo conforto, garantindo uma experiência relaxante e inesquecível em cada procedimento.
@@ -610,7 +863,7 @@ function Footer({ ready }: { ready: boolean }) {
           <h2 className="font-serif text-white text-5xl md:text-7xl mb-12">Pronta para transformar<br/><span className="italic text-transparent bg-clip-text bg-gradient-to-r from-[#F3E5AB] via-[#D4AF37] to-[#FFF1BA] animate-shimmer" style={{ backgroundSize: '200% auto' }}>seu olhar?</span></h2>
           
           <a 
-            href="https://wa.me/5521992279722?text=Olá!%20Gostaria%20de%20agendar%20um%20horário."
+            href="https://anna-beauty.vercel.app/"
             target="_blank"
             rel="noopener noreferrer"
             className="inline-block px-12 py-5 bg-gradient-to-r from-[#F3E5AB] via-[#D4AF37] to-[#F3E5AB] animate-shimmer text-lux-darker rounded-full text-sm font-bold tracking-widest uppercase hover:shadow-[0_0_40px_rgba(243,229,171,0.4)] hover:scale-105 transition-all duration-500 mb-24" 

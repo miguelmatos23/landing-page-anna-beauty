@@ -26,6 +26,7 @@ export default {
         'shimmer': 'shimmer 2s linear infinite',
         'float': 'float 6s ease-in-out infinite',
         'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+        'float-particle': 'floatParticle 12s ease-in-out infinite',
       },
       keyframes: {
         shimmer: {
@@ -35,6 +36,10 @@ export default {
         float: {
           '0%, 100%': { transform: 'translateY(0)' },
           '50%': { transform: 'translateY(-10px)' },
+        },
+        floatParticle: {
+          '0%, 100%': { transform: 'translateY(0) translateX(0) scale(1)', opacity: 0.1 },
+          '50%': { transform: 'translateY(-120px) translateX(30px) scale(1.4)', opacity: 0.7 },
         }
       }
     },
