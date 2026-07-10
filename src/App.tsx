@@ -2,7 +2,6 @@ import { useState, useEffect, useRef, useCallback } from 'react';
 
 // --- IMAGES ---
 const ANNA_PHOTO_1 = '/fotos/foto1.png';   
-const ANNA_PHOTO_2 = '/fotos/foto2.png';   
 const STUDIO_PHOTO = '/fotos/studio1.jpg';   
 const ANNA_VIDEO   = '/videos/video1.mp4'; 
 const DESKTOP_VIDEO = '/videos/videodesktop.mp4';
@@ -36,7 +35,7 @@ const serviceCategories = [
   }
 ];
 
-function useStaggeredReveal(count: number, threshold = 0.15, ready = true) {
+function useStaggeredReveal(_count: number, threshold = 0.15, ready = true) {
   const [visible, setVisible] = useState(false);
   const nodeRef = useRef<HTMLElement | null>(null);
   const setRef = useCallback((el: HTMLElement | null) => { nodeRef.current = el; }, []);
