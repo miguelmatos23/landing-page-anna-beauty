@@ -108,9 +108,11 @@ function SplashScreen({ onComplete }: { onComplete: () => void }) {
         clearInterval(t);
         setTimeout(() => setPhase('blink'), 200);
         setTimeout(() => setPhase('loading'), 350);
-        setTimeout(() => setPhase('opening'), 500);
+        setTimeout(() => {
+          setPhase('opening');
+          cb.current(); // Inicia a animação das frases do site junto com a abertura do olho
+        }, 500);
         setTimeout(() => setPhase('done'), 1800);
-        setTimeout(() => cb.current(), 1900);
       }
     }, 15);
     return () => clearInterval(t);
