@@ -114,10 +114,10 @@ function HeroSection() {
       <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-lux-gold/10 rounded-full blur-[150px] animate-pulse-slow" />
 
       {/* Badge */}
-      <div className="absolute top-6 left-0 right-0 flex justify-center z-20">
-        <div className="flex items-center gap-2 bg-lux-gold/10 border border-lux-gold/30 backdrop-blur-sm rounded-full px-5 py-2">
-          <span className="w-2 h-2 rounded-full bg-lux-gold animate-pulse" />
-          <span className="text-lux-goldLight text-[11px] tracking-[0.3em] uppercase font-bold">Vagas Limitadas — Turmas Julho 2026</span>
+      <div className="absolute top-20 sm:top-24 left-0 right-0 flex justify-center z-20 px-4">
+        <div className="flex items-center gap-2 bg-lux-gold/10 border border-lux-gold/30 backdrop-blur-sm rounded-full px-4 py-2 max-w-full text-center">
+          <span className="w-2 h-2 rounded-full bg-lux-gold animate-pulse shrink-0" />
+          <span className="text-lux-goldLight text-[10px] md:text-[11px] tracking-[0.2em] sm:tracking-[0.3em] uppercase font-bold truncate">Vagas Limitadas — Turmas Julho 2026</span>
         </div>
       </div>
 
@@ -544,12 +544,12 @@ function MentorSection() {
             <div className="grid grid-cols-3 gap-4 mb-10">
               {[
                 { num: '2+', label: 'Anos de Experiência' },
-                { num: '100+', label: 'Alunas Formadas' },
+                { num: '500+', label: 'Clientes Atendidas' },
                 { num: '5★', label: 'Avaliações' },
               ].map((stat, i) => (
                 <div key={i} className="text-center p-4 bg-lux-gold/8 border border-lux-gold/15 rounded-2xl">
-                  <p className="font-serif text-3xl text-lux-dark font-bold">{stat.num}</p>
-                  <p className="text-lux-gray text-xs mt-1">{stat.label}</p>
+                  <p className="font-serif text-2xl md:text-3xl text-lux-dark font-bold">{stat.num}</p>
+                  <p className="text-lux-gray text-[10px] md:text-xs mt-1">{stat.label}</p>
                 </div>
               ))}
             </div>
@@ -741,17 +741,19 @@ function CourseNavbar() {
 
   return (
     <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${scrolled ? 'bg-lux-darker/90 backdrop-blur-lg border-b border-lux-gold/15 py-3 shadow-[0_4px_30px_rgba(0,0,0,0.3)]' : 'bg-transparent py-5'}`}>
-      <div className="max-w-6xl mx-auto px-6 flex items-center justify-between">
-        <div className="flex flex-col">
-          <span className="font-serif text-xl font-bold text-white tracking-tight leading-none">Anna</span>
-          <span className="font-serif text-xl italic text-lux-goldLight tracking-tight leading-none -mt-0.5">Beauty</span>
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 flex items-center justify-between gap-2">
+        <div className="flex flex-col shrink-0">
+          <span className="font-serif text-lg sm:text-xl font-bold text-white tracking-tight leading-none">Anna</span>
+          <span className="font-serif text-lg sm:text-xl italic text-lux-goldLight tracking-tight leading-none -mt-0.5">Beauty</span>
         </div>
-        <div className="hidden sm:flex items-center gap-6">
+        <div className="hidden md:flex items-center gap-6">
           <a href="#modulos" className="text-white/60 hover:text-lux-goldLight text-xs tracking-widest uppercase transition-colors">Conteúdo</a>
           <a href="#curso-opcoes" className="text-white/60 hover:text-lux-goldLight text-xs tracking-widest uppercase transition-colors">Turmas</a>
           <a href="#oferta" className="text-white/60 hover:text-lux-goldLight text-xs tracking-widest uppercase transition-colors">Preços</a>
         </div>
-        <WaButton href={WA_METODO} size="sm" id="nav-cta">Garantir Vaga</WaButton>
+        <div className="shrink-0">
+          <WaButton href={WA_METODO} size="sm" id="nav-cta">Garantir Vaga</WaButton>
+        </div>
       </div>
     </nav>
   );
