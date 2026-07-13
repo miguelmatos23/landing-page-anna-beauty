@@ -1,4 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import CoursePage from './pages/CoursePage';
 
 // --- IMAGES ---
 const ANNA_PHOTO_1 = '/fotos/foto1.png';   
@@ -907,7 +909,7 @@ function Footer({ ready }: { ready: boolean }) {
   );
 }
 
-export default function App() {
+function MainSite() {
   const [showSplash, setShowSplash] = useState(true);
   const [animReady, setAnimReady] = useState(false);
 
@@ -929,5 +931,16 @@ export default function App() {
       </main>
       <Footer ready={animReady} />
     </div>
+  );
+}
+
+export default function App() {
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<MainSite />} />
+        <Route path="/curso" element={<CoursePage />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
