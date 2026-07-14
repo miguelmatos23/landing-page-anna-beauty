@@ -113,15 +113,13 @@ function HeroSection() {
       {/* Glow */}
       <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-lux-gold/10 rounded-full blur-[150px] animate-pulse-slow" />
 
-      {/* Badge */}
-      <div className="absolute top-20 sm:top-24 left-0 right-0 flex justify-center z-20 px-4">
-        <div className="flex items-center gap-2 bg-lux-gold/10 border border-lux-gold/30 backdrop-blur-sm rounded-full px-4 py-2 max-w-full text-center">
+      <div className="relative z-10 text-center px-6 max-w-4xl mx-auto pt-32 pb-16 flex flex-col items-center">
+        {/* Badge */}
+        <div className="flex items-center gap-2 bg-lux-gold/10 border border-lux-gold/30 backdrop-blur-sm rounded-full px-4 py-2 mb-8 max-w-full text-center">
           <span className="w-2 h-2 rounded-full bg-lux-gold animate-pulse shrink-0" />
-          <span className="text-lux-goldLight text-[10px] md:text-[11px] tracking-[0.2em] sm:tracking-[0.3em] uppercase font-bold truncate">Vagas Limitadas — Turmas Julho 2026</span>
+          <span className="text-lux-goldLight text-[10px] md:text-[11px] tracking-[0.2em] sm:tracking-[0.3em] uppercase font-bold">Vagas Limitadas — Turmas Julho 2026</span>
         </div>
-      </div>
 
-      <div className="relative z-10 text-center px-6 max-w-4xl mx-auto pt-24 pb-16">
         {/* Pre-headline */}
         <p className="text-lux-gold text-xs md:text-sm tracking-[0.35em] uppercase font-bold mb-6 animate-fade-in">
           Anna Beauty Academy Apresenta
