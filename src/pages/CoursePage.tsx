@@ -364,10 +364,6 @@ function CurriculumSection() {
       num: '03', title: 'Prática em Modelo Real',
       items: ['Mapeamento e design do olhar', 'Aplicação supervisionada com feedback', 'Correções em tempo real com a Anna', 'Criando seu portfólio profissional'],
     },
-    {
-      num: '04', title: 'Negócios & Carreira',
-      items: ['Como precificar seu serviço com valor', 'Fidelização e gestão de clientes', 'Estratégias para atrair clientes', 'Construindo sua marca pessoal'],
-    },
   ];
 
   return (
@@ -386,7 +382,7 @@ function CurriculumSection() {
           </h2>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {modules.map((mod, i) => (
             <div key={i} style={style(i * 100)} className="bg-white/4 border border-white/8 rounded-3xl p-7 md:p-8 hover:border-lux-gold/30 transition-all duration-500 hover:bg-white/6 group">
               <div className="flex items-start gap-4 mb-6">
