@@ -167,7 +167,7 @@ function HeroSection() {
       </div>
 
       {/* Scroll indicator */}
-      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 animate-float">
+      <div className="hidden lg:flex absolute bottom-8 left-1/2 -translate-x-1/2 flex-col items-center gap-2 animate-float">
         <span className="text-lux-gold/50 text-[9px] tracking-[0.4em] uppercase">Descubra mais</span>
         <div className="w-[1px] h-10 bg-gradient-to-b from-lux-gold/50 to-transparent" />
       </div>
