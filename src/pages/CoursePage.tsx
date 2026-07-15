@@ -113,30 +113,32 @@ function HeroSection() {
       {/* Glow */}
       <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-lux-gold/10 rounded-full blur-[150px] animate-pulse-slow" />
 
-      <div className="relative z-10 text-center px-6 max-w-4xl mx-auto pt-32 pb-16 flex flex-col items-center">
-        {/* Badge */}
-        <div className="flex items-center gap-2 bg-lux-gold/10 border border-lux-gold/30 backdrop-blur-sm rounded-full px-4 py-2 mb-8 max-w-full text-center">
-          <span className="w-2 h-2 rounded-full bg-lux-gold animate-pulse shrink-0" />
-          <span className="text-lux-goldLight text-[10px] md:text-[11px] tracking-[0.2em] sm:tracking-[0.3em] uppercase font-bold">Vagas Limitadas — Turmas Julho 2026</span>
+      <div className="relative z-10 text-center px-6 max-w-4xl mx-auto pt-20 pb-16 flex flex-col items-center">
+        {/* Editorial Pre-Headline */}
+        <div className="flex items-center gap-4 mb-12">
+          <div className="w-8 md:w-12 h-[1px] bg-lux-gold/40"></div>
+          <span className="text-lux-goldLight text-[9px] md:text-[10px] tracking-[0.35em] uppercase font-light">
+            Vagas Limitadas <span className="mx-2 text-lux-gold/30">·</span> Julho 2026
+          </span>
+          <div className="w-8 md:w-12 h-[1px] bg-lux-gold/40"></div>
         </div>
 
         {/* Pre-headline */}
-        <p className="text-lux-gold text-xs md:text-sm tracking-[0.35em] uppercase font-bold mb-6 animate-fade-in">
-          Anna Beauty Academy Apresenta
+        <p className="text-lux-gold/80 text-[10px] md:text-xs tracking-[0.4em] uppercase font-medium mb-6 animate-fade-in">
+          Anna Beauty Apresenta
         </p>
 
         {/* Headline */}
         <h1 className="font-serif text-white text-[2.6rem] sm:text-[3.5rem] md:text-[4.8rem] lg:text-[5.5rem] leading-[1.08] mb-6 text-balance">
-          Aprenda a Arte da<br />
+          Sua Nova Profissão<br />
           <span className="italic text-transparent bg-clip-text bg-gradient-to-r from-[#F3E5AB] via-[#D4AF37] to-[#FFF1BA] animate-shimmer" style={{ backgroundSize: '200% auto' }}>
-            Extensão de Cílios
-          </span><br />
-          do Zero ao Profissional
+            Começa Aqui.
+          </span>
         </h1>
 
         {/* Sub */}
-        <p className="text-white/75 text-base md:text-xl font-light max-w-2xl mx-auto mb-10 leading-relaxed">
-          Em 2 dias intensivos você sai capacitada para atender clientes, cobrar o que merece e construir uma carreira lucrativa na estética.
+        <p className="text-lux-goldLight/90 text-lg md:text-2xl font-medium max-w-2xl mx-auto mb-10 leading-relaxed tracking-wide drop-shadow-[0_2px_10px_rgba(212,175,55,0.2)]">
+          Domine a extensão de cílios do zero.
         </p>
 
         {/* CTA */}
@@ -167,9 +169,9 @@ function HeroSection() {
       </div>
 
       {/* Scroll indicator */}
-      <div className="hidden lg:flex absolute bottom-8 left-1/2 -translate-x-1/2 flex-col items-center gap-2 animate-float">
+      <div className="flex absolute bottom-8 left-1/2 -translate-x-1/2 flex-col items-center gap-2 animate-float z-10">
         <span className="text-lux-gold/50 text-[9px] tracking-[0.4em] uppercase">Descubra mais</span>
-        <div className="w-[1px] h-10 bg-gradient-to-b from-lux-gold/50 to-transparent" />
+        <div className="w-[1px] h-8 md:h-10 bg-gradient-to-b from-lux-gold/50 to-transparent" />
       </div>
     </section>
   );
@@ -638,7 +640,7 @@ function FAQSection() {
   const faqs = [
     { q: 'Preciso ter experiência prévia para fazer o curso?', a: 'Não! O Método Anna Beauty foi desenvolvido para iniciantes. Você aprende do zero, de forma progressiva e com prática supervisionada.' },
     { q: 'O que eu preciso levar para o curso?', a: 'Apenas você! Todo o material e ferramentas para o dia da prática são fornecidos. A apostila também é inclusa.' },
-    { q: 'O curso tem certificado?', a: 'Sim! Ao concluir os 2 dias, você recebe seu certificado de conclusão emitido pela Anna Beauty Academy.' },
+    { q: 'O curso tem certificado?', a: 'Sim! Ao concluir os 2 dias, você recebe seu certificado de conclusão emitido por Anna Beauty.' },
     { q: 'Como funciona o suporte de 1 mês?', a: 'Após o curso, você terá acesso direto à Anna via WhatsApp para tirar dúvidas sobre técnicas e atendimentos reais.' },
     { q: 'Posso pagar parcelado?', a: 'O valor parcelado é de R$ 950 (Método) ou R$ 550 (Recicla Lash). No Pix você tem desconto especial: R$ 800 e R$ 480 respectivamente. Fale no WhatsApp para combinar.' },
     { q: 'Quantas vagas disponíveis por turma?', a: 'As turmas são pequenas e exclusivas para garantir atenção individualizada. Por isso as vagas são limitadas e costumam esgotar rápido!' },
@@ -760,7 +762,6 @@ function CourseFooter() {
       <div className="max-w-6xl mx-auto px-6 flex flex-col sm:flex-row items-center justify-between gap-4">
         <div className="text-center sm:text-left">
           <span className="font-serif text-lg text-white">Anna<span className="italic text-lux-goldLight"> Beauty</span></span>
-          <span className="text-white/30 text-xs ml-2">Academy</span>
         </div>
         <p className="text-white/25 text-xs text-center">
           © {new Date().getFullYear()} Anna Beauty. Todos os direitos reservados.
@@ -794,7 +795,7 @@ function FloatingWA() {
 // ── PAGE ──────────────────────────────────────────────────────────────────────
 export default function CoursePage() {
   useEffect(() => {
-    document.title = 'Método Anna Beauty — Curso de Extensão de Cílios | Anna Beauty Academy';
+    document.title = 'Método Anna Beauty — Curso de Extensão de Cílios | Anna Beauty';
     const meta = document.querySelector('meta[name="description"]');
     if (meta) meta.setAttribute('content', 'Aprenda extensão de cílios do zero ao profissional em 2 dias intensivos com Anna Beauty. Teoria, prática em modelo real, apostila exclusiva e 1 mês de suporte. Vagas limitadas!');
     window.scrollTo(0, 0);

@@ -3,9 +3,9 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import CoursePage from './pages/CoursePage';
 
 // --- IMAGES ---
-const ANNA_PHOTO_1 = '/fotos/foto1.png';   
-const STUDIO_PHOTO = '/fotos/studio1.jpg';   
-const ANNA_VIDEO   = '/videos/video1.mp4'; 
+const ANNA_PHOTO_1 = '/fotos/foto1.png';
+const STUDIO_PHOTO = '/fotos/studio1.jpg';
+const ANNA_VIDEO = '/videos/video1.mp4';
 const DESKTOP_VIDEO = '/videos/videodesktop.mp4';
 
 const serviceCategories = [
@@ -79,7 +79,7 @@ function useParallax(speed = -0.08) {
       const scrolled = window.scrollY;
       const elementTop = rect.top + scrolled;
       const viewportHeight = window.innerHeight;
-      
+
       if (rect.top < viewportHeight && rect.bottom > 0) {
         const relativeScroll = scrolled - (elementTop - viewportHeight);
         setOffset(relativeScroll * speed);
@@ -361,12 +361,12 @@ function Navbar() {
             <span className={`font-serif text-2xl md:text-3xl font-bold tracking-tight leading-none transition-all duration-500 ${scrolled ? 'text-lux-gold' : 'text-white'}`}>Anna</span>
             <span className={`font-serif text-2xl md:text-3xl italic tracking-tight leading-none -mt-1 transition-all duration-500 group-hover:text-lux-goldLight ${scrolled ? 'text-[#AA7C11]' : 'text-lux-goldLight'}`}>Beauty</span>
           </div>
-          
+
           <div className="hidden md:flex items-center gap-10">
             {navLinks.map(l => (
-               <a key={l.label} href={l.href} className={`text-sm tracking-widest uppercase transition-all duration-300 hover:-translate-y-0.5 ${scrolled ? 'text-lux-dark/80 hover:text-lux-gold' : 'text-white/80 hover:text-lux-goldLight'}`}>{l.label}</a>
+              <a key={l.label} href={l.href} className={`text-sm tracking-widest uppercase transition-all duration-300 hover:-translate-y-0.5 ${scrolled ? 'text-lux-dark/80 hover:text-lux-gold' : 'text-white/80 hover:text-lux-goldLight'}`}>{l.label}</a>
             ))}
-            <a href="https://anna-beauty.vercel.app/" target="_blank" rel="noopener noreferrer" className={`relative overflow-hidden px-8 py-3 rounded-full text-xs font-bold tracking-widest uppercase transition-all duration-500 border group ${scrolled ? 'bg-lux-gold text-lux-darker border-lux-gold hover:bg-[#AA7C11]' : 'bg-transparent text-white border-lux-gold hover:bg-lux-gold hover:text-lux-darker hover:border-lux-gold'}`}>
+            <a href="https://api.whatsapp.com/send?phone=5521992279722&text=Ol%C3%A1!%20Gostaria%20de%20agendar%20um%20hor%C3%A1rio%20na%20Anna%20Beauty." target="_blank" rel="noopener noreferrer" className={`relative overflow-hidden px-8 py-3 rounded-full text-xs font-bold tracking-widest uppercase transition-all duration-500 border group ${scrolled ? 'bg-lux-gold text-lux-darker border-lux-gold hover:bg-[#AA7C11]' : 'bg-transparent text-white border-lux-gold hover:bg-lux-gold hover:text-lux-darker hover:border-lux-gold'}`}>
               <span className="relative z-10">Agende aqui</span>
             </a>
           </div>
@@ -382,11 +382,11 @@ function Navbar() {
       {/* Mobile Menu */}
       <div className={`md:hidden fixed inset-0 z-40 ${isOpen ? 'pointer-events-auto' : 'pointer-events-none'}`}>
         <div className={`absolute inset-0 bg-lux-darker/60 backdrop-blur-md transition-opacity duration-500 ${isOpen ? 'opacity-100' : 'opacity-0'}`} onClick={() => setIsOpen(false)} />
-        
+
         {/* Painel do Menu com fundo Branco/Claro */}
         <div className={`absolute top-0 right-0 h-full w-[85%] bg-lux-light shadow-2xl transition-transform duration-500 ease-[cubic-bezier(0.76,0,0.24,1)] ${isOpen ? 'translate-x-0' : 'translate-x-full'}`}>
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,_var(--tw-gradient-stops))] from-lux-gold/5 via-lux-light to-lux-light pointer-events-none" />
-          
+
           <div className="flex flex-col justify-center h-full px-10 gap-8 relative z-10">
             {navLinks.map((l, i) => (
               <a key={l.label} href={l.href} onClick={() => setIsOpen(false)}
@@ -396,8 +396,8 @@ function Navbar() {
                 <span className="absolute left-0 bottom-1 w-0 h-[1px] bg-lux-gold transition-all duration-300 group-hover:w-full"></span>
               </a>
             ))}
-            
-            <a href="https://anna-beauty.vercel.app/" target="_blank" rel="noopener noreferrer" 
+
+            <a href="https://api.whatsapp.com/send?phone=5521992279722&text=Ol%C3%A1!%20Gostaria%20de%20agendar%20um%20hor%C3%A1rio%20na%20Anna%20Beauty." target="_blank" rel="noopener noreferrer"
               className="mt-8 px-10 py-4 bg-lux-gold text-white font-bold rounded-full border border-lux-gold text-sm tracking-widest uppercase text-center w-full sm:w-max shadow-[0_4px_25px_rgba(212,175,55,0.3)]"
               style={{ opacity: isOpen ? 1 : 0, transition: `all 500ms ease 400ms` }}>
               Agende aqui
@@ -417,30 +417,30 @@ function HeroSection({ ready }: { ready: boolean }) {
       <div className="absolute inset-0 w-full h-full bg-lux-darker">
         {/* Vídeo para Mobile (Vertical) */}
         <video src={ANNA_VIDEO} autoPlay muted loop playsInline className="block lg:hidden w-full h-full object-cover object-center" />
-        
+
         {/* Vídeo para Desktop (Horizontal) */}
         <video src={DESKTOP_VIDEO} autoPlay muted loop playsInline className="hidden lg:block w-full h-full object-cover object-center scale-[1.15] animate-[pulse_20s_ease-in-out_infinite]" />
-        
+
         {/* Máscara escura para legibilidade do texto */}
-        <div className="absolute inset-0 bg-gradient-to-b from-lux-darker/70 via-lux-darker/40 to-lux-darker/80 z-20 pointer-events-none" /> 
+        <div className="absolute inset-0 bg-gradient-to-b from-lux-darker/70 via-lux-darker/40 to-lux-darker/80 z-20 pointer-events-none" />
         <div className="hidden lg:block absolute inset-0 bg-gradient-to-r from-lux-darker/95 via-lux-darker/60 to-transparent z-20 pointer-events-none" />
       </div>
-      
+
       {/* Decorative floating elements */}
       <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-lux-gold/10 rounded-full blur-[100px] animate-float" />
       <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-lux-goldLight/10 rounded-full blur-[120px] animate-pulse-slow" />
-      
+
       <div className="relative z-30 text-center lg:text-left px-6 max-w-7xl mx-auto w-full h-full flex flex-col justify-center items-center lg:items-start pt-16">
         <h1 className="font-serif text-white text-[3.5rem] md:text-[5.5rem] lg:text-[6.5rem] leading-[1.1] mb-8 text-balance drop-shadow-[0_8px_20px_rgba(0,0,0,0.8)] max-w-3xl" style={getAnimStyle(1)}>
           A Arte de um <br/> <span className="italic text-lux-goldLight drop-shadow-[0_2px_15px_rgba(212,175,55,0.4)]">Olhar Perfeito</span>
         </h1>
-        
+
         <p className="text-white/90 drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)] max-w-lg mb-10 text-sm md:text-base font-light" style={getAnimStyle(2)}>
           Experimente o mais alto padrão em lash design, onde cada detalhe é pensado para realçar a sua beleza autêntica.
         </p>
 
         <div className="flex flex-col sm:flex-row items-center gap-4 w-full lg:w-max mt-12 md:mt-0" style={getAnimStyle(3)}>
-          <a href="https://anna-beauty.vercel.app/" target="_blank" rel="noopener noreferrer" className="relative group px-6 py-2.5 md:px-8 md:py-3 bg-transparent border border-lux-gold text-lux-goldLight rounded-full text-[10px] md:text-xs font-semibold tracking-widest uppercase overflow-hidden transition-all duration-500 shadow-[0_0_15px_rgba(212,175,55,0.2)] hover:shadow-[0_0_30px_rgba(212,175,55,0.4)] w-[80%] max-w-[220px] sm:max-w-none sm:w-auto text-center">
+          <a href="https://api.whatsapp.com/send?phone=5521992279722&text=Ol%C3%A1!%20Gostaria%20de%20agendar%20um%20hor%C3%A1rio%20na%20Anna%20Beauty." target="_blank" rel="noopener noreferrer" className="relative group px-6 py-2.5 md:px-8 md:py-3 bg-transparent border border-lux-gold text-lux-goldLight rounded-full text-[10px] md:text-xs font-semibold tracking-widest uppercase overflow-hidden transition-all duration-500 shadow-[0_0_15px_rgba(212,175,55,0.2)] hover:shadow-[0_0_30px_rgba(212,175,55,0.4)] w-[80%] max-w-[220px] sm:max-w-none sm:w-auto text-center">
             <div className="absolute inset-0 bg-gradient-to-r from-lux-gold to-lux-goldLight translate-y-full group-hover:translate-y-0 transition-transform duration-500 ease-out" />
             <span className="relative z-10 group-hover:text-lux-darker transition-colors duration-500">Agendar</span>
           </a>
@@ -450,7 +450,7 @@ function HeroSection({ ready }: { ready: boolean }) {
           </a>
         </div>
       </div>
-      
+
       <div className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3 text-lux-gold animate-float">
         <span className="text-[10px] uppercase tracking-[0.3em] font-semibold">Scroll</span>
         <div className="w-[1px] h-12 bg-gradient-to-b from-lux-gold to-transparent" />
@@ -469,24 +469,24 @@ function AboutSection({ ready }: { ready: boolean }) {
       <div className="absolute -left-40 top-20 w-96 h-96 bg-lux-gold/5 rounded-full blur-[100px]" />
 
       <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center gap-16 md:gap-24 relative z-10">
-        
+
         <div className="w-full md:w-5/12" style={getAnimStyle(0)}>
           {/* Container principal sem overflow-hidden para os elementos saírem da borda */}
           <div className="relative aspect-[3/4] w-full max-w-md mx-auto md:mr-auto group">
-            
+
             {/* Molde dourado de fundo (deslocado para fora) */}
             <div className="absolute inset-0 bg-lux-gold/15 translate-x-6 translate-y-6 rounded-t-[120px] rounded-b-[40px] transition-transform duration-700 group-hover:translate-x-8 group-hover:translate-y-8 z-0 shadow-md" />
-            
+
             {/* Wrapper da imagem com overflow-hidden para o efeito parallax */}
             <div ref={parallax.ref} className="relative w-full h-full overflow-hidden rounded-t-[120px] rounded-b-[40px] z-10 shadow-2xl transition-transform duration-700 group-hover:-translate-y-2 group-hover:-translate-x-2">
-              <img 
-                src={ANNA_PHOTO_1} 
-                alt="Anna Beauty" 
-                style={parallax.style} 
-                className="relative z-10 w-full h-[120%] -top-[10%] object-cover object-top rounded-t-[120px] rounded-b-[40px] grayscale-[20%] group-hover:grayscale-0 transition-all duration-700 scale-110" 
+              <img
+                src={ANNA_PHOTO_1}
+                alt="Anna Beauty"
+                style={parallax.style}
+                className="relative z-10 w-full h-[120%] -top-[10%] object-cover object-top rounded-t-[120px] rounded-b-[40px] grayscale-[20%] group-hover:grayscale-0 transition-all duration-700 scale-110"
               />
             </div>
-            
+
             {/* Selo giratório posicionado completamente fora do molde */}
             <div className="absolute -bottom-8 -right-8 w-36 h-36 rounded-full border border-lux-gold/40 flex items-center justify-center p-2 bg-lux-light/95 backdrop-blur-sm z-20 shadow-[0_15px_30px_rgba(212,175,55,0.15)] group-hover:scale-110 transition-transform duration-500">
               <svg viewBox="0 0 100 100" className="w-full h-full animate-[spin_15s_linear_infinite]">
@@ -539,12 +539,12 @@ function CoursesSection({ ready }: { ready: boolean }) {
 
       {/* Video de fundo no canto esquerdo */}
       <div className="absolute left-0 top-0 h-full w-full lg:w-[50%] opacity-20 pointer-events-none overflow-hidden select-none z-0">
-        <video 
-          src="/videos/videocurso3.mp4" 
-          autoPlay 
-          loop 
-          muted 
-          playsInline 
+        <video
+          src="/videos/videocurso3.mp4"
+          autoPlay
+          loop
+          muted
+          playsInline
           className="w-full h-full object-cover"
         />
         {/* Degradês para suavizar as bordas do vídeo no fundo escuro */}
@@ -554,15 +554,15 @@ function CoursesSection({ ready }: { ready: boolean }) {
 
       <div className="max-w-7xl mx-auto px-6 relative z-10">
         <div className="flex flex-col lg:flex-row items-center gap-16">
-          
+
           <div className="w-full lg:w-1/2" style={getAnimStyle(0)}>
             <span className="text-lux-gold tracking-[0.2em] uppercase text-xs font-bold block mb-4 flex items-center gap-3">
-               <span className="w-8 h-[1px] bg-lux-gold"></span> Anna Beauty Academy
+              <span className="w-8 h-[1px] bg-lux-gold"></span> Cursos Anna Beauty
             </span>
             <h2 className="font-serif text-4xl md:text-5xl lg:text-6xl text-white leading-[1.1] mb-8 text-balance">
-              Método Anna Beauty <br/><span className="italic text-transparent bg-clip-text bg-gradient-to-r from-[#F3E5AB] via-[#D4AF37] to-[#FFF1BA] animate-shimmer" style={{ backgroundSize: '200% auto' }}>Extensão de Cílios</span>
+              Método Anna Beauty <br /><span className="italic text-transparent bg-clip-text bg-gradient-to-r from-[#F3E5AB] via-[#D4AF37] to-[#FFF1BA] animate-shimmer" style={{ backgroundSize: '200% auto' }}>Extensão de Cílios</span>
             </h2>
-            
+
             <div className="space-y-8 mb-10">
               <p className="text-white/80 text-base md:text-lg font-light max-w-lg leading-relaxed">
                 O Método Anna Beauty foi desenvolvido para capacitar profissionais, ensinando desde as técnicas mais requisitadas de extensão de cílios até o gerenciamento estratégico da sua carreira no mercado da estética.
@@ -574,19 +574,19 @@ function CoursesSection({ ready }: { ready: boolean }) {
                 </h4>
                 <ul className="space-y-4 text-white/80 font-light text-sm md:text-base pl-12">
                   <li className="relative">
-                    <span className="absolute -left-6 top-0 text-lux-gold/70 text-xs">01.</span> 
+                    <span className="absolute -left-6 top-0 text-lux-gold/70 text-xs">01.</span>
                     <span>Técnicas exclusivas e avançadas de alongamento.</span>
                   </li>
                   <li className="relative">
-                    <span className="absolute -left-6 top-0 text-lux-gold/70 text-xs">02.</span> 
+                    <span className="absolute -left-6 top-0 text-lux-gold/70 text-xs">02.</span>
                     <span>Seleção criteriosa de materiais para cada perfil de cliente.</span>
                   </li>
                   <li className="relative">
-                    <span className="absolute -left-6 top-0 text-lux-gold/70 text-xs">03.</span> 
+                    <span className="absolute -left-6 top-0 text-lux-gold/70 text-xs">03.</span>
                     <span>Protocolos de segurança, durabilidade e saúde ocular.</span>
                   </li>
                   <li className="relative">
-                    <span className="absolute -left-6 top-0 text-lux-gold/70 text-xs">04.</span> 
+                    <span className="absolute -left-6 top-0 text-lux-gold/70 text-xs">04.</span>
                     <span>Gestão de atendimento e estratégias de fidelização.</span>
                   </li>
                 </ul>
@@ -601,28 +601,28 @@ function CoursesSection({ ready }: { ready: boolean }) {
                 </p>
               </div>
             </div>
-            
+
 
           </div>
 
           <div className="w-full lg:w-1/2 flex justify-center lg:justify-end" style={getAnimStyle(1)}>
             {/* Instagram Iframe Embed */}
             <div className="w-full max-w-[400px] aspect-[4/5] md:aspect-[3/4] rounded-2xl overflow-hidden shadow-[0_20px_50px_rgba(212,175,55,0.15)] border border-lux-gold/30 relative group bg-black flex items-center justify-center">
-               <div className="absolute inset-0 bg-gradient-to-br from-lux-gold to-lux-goldLight opacity-0 group-hover:opacity-10 transition-opacity duration-500 pointer-events-none z-10" />
-               <iframe 
-                 src="https://www.instagram.com/p/DY92w0HRfex/embed" 
-                 className="w-[calc(100%+4px)] h-[calc(100%+4px)] border-0" 
-                 scrolling="no" 
-                 allowTransparency={true}
-                 title="Instagram Video"
-               />
+              <div className="absolute inset-0 bg-gradient-to-br from-lux-gold to-lux-goldLight opacity-0 group-hover:opacity-10 transition-opacity duration-500 pointer-events-none z-10" />
+              <iframe
+                src="https://www.instagram.com/p/DY92w0HRfex/embed"
+                className="w-[calc(100%+4px)] h-[calc(100%+4px)] border-0"
+                scrolling="no"
+                allowTransparency={true}
+                title="Instagram Video"
+              />
             </div>
           </div>
         </div>
 
         {/* Social Proof (Testimonials) - Animated Marquee */}
-        <div 
-          className="mt-24 w-full relative max-w-7xl mx-auto" 
+        <div
+          className="mt-24 w-full relative max-w-7xl mx-auto"
           style={{
             ...getAnimStyle(2),
             maskImage: 'linear-gradient(to right, transparent, black 15%, black 85%, transparent)',
@@ -637,7 +637,7 @@ function CoursesSection({ ready }: { ready: boolean }) {
             <div className="w-[300px] md:w-[450px] flex-shrink-0 overflow-hidden relative group transition-all duration-500 hover:-translate-y-2 opacity-80 hover:opacity-100">
               <img src="/print2.png" alt="Depoimento Etiene" className="w-full h-auto object-cover rounded-xl" />
             </div>
-            
+
             {/* Group 2 (Duplicate for infinite loop) */}
             <div className="w-[300px] md:w-[450px] flex-shrink-0 overflow-hidden relative group transition-all duration-500 hover:-translate-y-2 opacity-80 hover:opacity-100">
               <img src="/print1.png" alt="Depoimento Luana" className="w-full h-auto object-cover rounded-xl" />
@@ -653,14 +653,14 @@ function CoursesSection({ ready }: { ready: boolean }) {
           <div className="relative inline-block">
             {/* Efeito de brilho pulsante por trás do botão para destaque */}
             <div className="absolute -inset-1 bg-gradient-to-r from-lux-gold to-lux-goldLight rounded-full blur opacity-40 animate-pulse"></div>
-            
-            <a 
+
+            <a
               href="https://api.whatsapp.com/send?phone=5521992279722&text=Ol%C3%A1!%20Gostaria%20de%20garantir%20minha%20inscri%C3%A7%C3%A3o%20no%20M%C3%A9todo%20Anna%20Beauty%20-%20Extens%C3%A3o%20de%20C%C3%ADlios."
               target="_blank"
               rel="noopener noreferrer"
               className="relative inline-flex items-center gap-3 px-12 py-5 bg-gradient-to-r from-[#D4AF37] to-[#F3E5AB] text-lux-darker rounded-full text-sm font-bold tracking-widest uppercase hover:shadow-[0_0_40px_rgba(212,175,55,0.7)] hover:-translate-y-1 transition-all duration-300"
             >
-              <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+              <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z" /></svg>
               Garantir Minha Vaga
             </a>
           </div>
@@ -677,9 +677,9 @@ function ServicesSection({ ready }: { ready: boolean }) {
     <section id="serviços" ref={setRef} className="w-full py-24 md:py-40 bg-lux-light relative overflow-hidden">
       {/* Imagem de fundo no canto esquerdo */}
       <div className="absolute left-0 top-0 h-full w-full lg:w-[50%] opacity-15 pointer-events-none overflow-hidden select-none z-0">
-        <img 
-          src="/fotos/servico1.png" 
-          alt="Background Serviços Esquerdo" 
+        <img
+          src="/fotos/servico1.png"
+          alt="Background Serviços Esquerdo"
           className="w-full h-full object-cover object-left"
         />
         {/* Degradês para suavizar e mesclar a imagem com o fundo claro */}
@@ -689,12 +689,12 @@ function ServicesSection({ ready }: { ready: boolean }) {
 
       {/* Vídeo de fundo no canto direito (Apenas Desktop) */}
       <div className="hidden lg:block absolute right-0 top-0 h-full w-[42%] opacity-30 pointer-events-none overflow-hidden select-none z-0">
-        <video 
-          src="/videos/videoservico2.mp4" 
-          autoPlay 
-          loop 
-          muted 
-          playsInline 
+        <video
+          src="/videos/videoservico2.mp4"
+          autoPlay
+          loop
+          muted
+          playsInline
           className="w-full h-full object-cover object-right"
         />
         {/* Degradês para suavizar e mesclar o vídeo com o fundo claro */}
@@ -704,7 +704,7 @@ function ServicesSection({ ready }: { ready: boolean }) {
 
       <div className="max-w-7xl mx-auto px-6 relative z-10">
         <div className="flex flex-col lg:flex-row gap-16 lg:gap-8">
-          
+
           {/* Coluna da Esquerda: Título e Lista de Serviços */}
           <div className="lg:w-[58%] w-full flex flex-col gap-12">
             <div style={getAnimStyle(0)}>
@@ -712,7 +712,7 @@ function ServicesSection({ ready }: { ready: boolean }) {
                 <span className="w-8 h-[1px] bg-lux-gold"></span> Menu de Serviços
               </span>
               <h2 className="font-serif text-4xl md:text-5xl lg:text-6xl text-transparent bg-clip-text bg-gradient-to-r from-[#D4AF37] via-[#AA7C11] to-[#F3E5AB] animate-shimmer leading-[1.1] mb-12" style={{ backgroundSize: '200% auto' }}>
-                Portfólio<br/><span className="italic text-lux-dark">Estético</span>
+                Portfólio<br /><span className="italic text-lux-dark">Estético</span>
               </h2>
             </div>
 
@@ -725,9 +725,9 @@ function ServicesSection({ ready }: { ready: boolean }) {
                   {cat.items.map((svc, i) => {
                     const uniqueIndex = catIdx * 4 + i + 4;
                     return (
-                      <a 
-                        key={i} 
-                        href="https://anna-beauty.vercel.app/"
+                      <a
+                        key={i}
+                        href="https://api.whatsapp.com/send?phone=5521992279722&text=Ol%C3%A1!%20Gostaria%20de%20agendar%20um%20hor%C3%A1rio%20na%20Anna%20Beauty."
                         target="_blank"
                         rel="noopener noreferrer"
                         className="group py-6 border-b border-lux-gold/10 flex flex-col md:flex-row md:items-center justify-between gap-4 cursor-pointer hover:bg-white hover:shadow-[0_10px_30px_rgba(212,175,55,0.05)] transition-all duration-500 px-6 -mx-6 rounded-xl"
@@ -758,12 +758,12 @@ function ServicesSection({ ready }: { ready: boolean }) {
             {/* Vídeo em Destaque no Mobile (Final da lista de serviços) */}
             <div className="block lg:hidden mt-12 w-[calc(100%+3rem)] -mx-6 relative" style={getAnimStyle(14)}>
               <div className="w-full aspect-[9/16] bg-lux-darker overflow-hidden relative">
-                <video 
-                  src="/videos/videoservico2.mp4" 
-                  autoPlay 
-                  loop 
-                  muted 
-                  playsInline 
+                <video
+                  src="/videos/videoservico2.mp4"
+                  autoPlay
+                  loop
+                  muted
+                  playsInline
                   className="w-full h-full object-cover"
                 />
                 {/* Degradês para suavizar as bordas superior e inferior do vídeo com o fundo claro */}
@@ -789,18 +789,18 @@ function LocationSection({ ready }: { ready: boolean }) {
         {/* Imagem do Estúdio (Esquerda no Desktop, Embaixo no Mobile) */}
         <div style={getAnimStyle(0)} className="w-full lg:w-1/2 relative min-h-[50vh] lg:min-h-screen overflow-hidden">
           <div ref={studioParallax.ref} className="w-full h-full relative overflow-hidden min-h-[50vh] lg:min-h-screen">
-             <img src={STUDIO_PHOTO} alt="Nosso Estúdio" style={studioParallax.style} className="absolute -top-[10%] left-0 w-full h-[120%] object-cover scale-110" />
-             {/* Sombra escura na base para o texto do estúdio e fade na direita no desktop */}
-             <div className="absolute inset-0 bg-gradient-to-t from-lux-darker/90 via-lux-darker/20 to-transparent lg:bg-gradient-to-r lg:from-transparent lg:to-lux-light/100 pointer-events-none z-10" />
-             {/* Borda degradê suave no topo apenas no mobile para fundir com a seção branca */}
-             <div className="absolute inset-x-0 top-0 h-48 bg-gradient-to-b from-lux-light to-transparent lg:hidden pointer-events-none z-10" />
-             
-             <div className="absolute bottom-10 left-6 md:left-12 text-white drop-shadow-[0_2px_10px_rgba(0,0,0,0.8)] pr-6 lg:pr-12 z-20">
-               <h3 className="font-serif text-3xl md:text-4xl mb-3 text-lux-goldLight">O ambiente perfeito<br/>para você</h3>
-               <p className="font-light text-sm md:text-base max-w-md text-white/90">
-                 Projetado para o seu máximo conforto, garantindo uma experiência relaxante e inesquecível em cada procedimento.
-               </p>
-             </div>
+            <img src={STUDIO_PHOTO} alt="Nosso Estúdio" style={studioParallax.style} className="absolute -top-[10%] left-0 w-full h-[120%] object-cover scale-110" />
+            {/* Sombra escura na base para o texto do estúdio e fade na direita no desktop */}
+            <div className="absolute inset-0 bg-gradient-to-t from-lux-darker/90 via-lux-darker/20 to-transparent lg:bg-gradient-to-r lg:from-transparent lg:to-lux-light/100 pointer-events-none z-10" />
+            {/* Borda degradê suave no topo apenas no mobile para fundir com a seção branca */}
+            <div className="absolute inset-x-0 top-0 h-48 bg-gradient-to-b from-lux-light to-transparent lg:hidden pointer-events-none z-10" />
+
+            <div className="absolute bottom-10 left-6 md:left-12 text-white drop-shadow-[0_2px_10px_rgba(0,0,0,0.8)] pr-6 lg:pr-12 z-20">
+              <h3 className="font-serif text-3xl md:text-4xl mb-3 text-lux-goldLight">O ambiente perfeito<br />para você</h3>
+              <p className="font-light text-sm md:text-base max-w-md text-white/90">
+                Projetado para o seu máximo conforto, garantindo uma experiência relaxante e inesquecível em cada procedimento.
+              </p>
+            </div>
           </div>
         </div>
 
@@ -810,34 +810,34 @@ function LocationSection({ ready }: { ready: boolean }) {
             <span className="text-lux-gold tracking-[0.3em] uppercase text-xs md:text-sm font-semibold">Onde Estamos</span>
             <div className="w-12 h-[1px] bg-gradient-to-r from-lux-gold to-transparent"></div>
           </div>
-          
+
           <h2 className="font-serif text-[2.5rem] md:text-[3.5rem] leading-[1.1] mb-8 text-lux-darker">
             Nosso <span className="italic text-lux-gold">Espaço</span>
           </h2>
-          
+
           <p className="text-lux-gray max-w-lg mb-8 text-sm md:text-base leading-relaxed">
             Nossa localização no Cavalcante é de fácil acesso, com um espaço pensado para unir sofisticação, paz e um atendimento impecável.
           </p>
-          
+
           <div className="flex items-start gap-4 mb-8">
-             <div className="p-3 bg-lux-gold/10 rounded-full text-lux-gold mt-1">
-               <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
-             </div>
-             <div>
-               <h4 className="font-serif text-lg text-lux-darker mb-1">Endereço</h4>
-               <p className="text-lux-gray">Rua Joaquim Norberto, 44<br/>Cavalcante, Térreo - Sala 6</p>
-             </div>
+            <div className="p-3 bg-lux-gold/10 rounded-full text-lux-gold mt-1">
+              <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
+            </div>
+            <div>
+              <h4 className="font-serif text-lg text-lux-darker mb-1">Endereço</h4>
+              <p className="text-lux-gray">Rua Joaquim Norberto, 44<br />Cavalcante, Térreo - Sala 6</p>
+            </div>
           </div>
-          
+
           {/* Google Maps Embed */}
           <div className="w-full aspect-video rounded-2xl overflow-hidden shadow-lg border border-lux-gold/20 mb-8 relative">
-            <iframe 
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3676.223055919794!2d-43.310168!3d-22.8682855!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x997cc0f994b29b%3A0xa1937ff7a9e6fb4e!2sR.%20Joaquim%20Norberto%2C%2044%20-%20Cavalcanti%2C%20Rio%20de%20Janeiro%20-%20RJ%2C%2021370-130!5e0!3m2!1spt-BR!2sbr!4v1716901844222!5m2!1spt-BR!2sbr" 
-              width="100%" 
-              height="100%" 
-              style={{ border: 0 }} 
-              allowFullScreen={false} 
-              loading="lazy" 
+            <iframe
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3676.223055919794!2d-43.310168!3d-22.8682855!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x997cc0f994b29b%3A0xa1937ff7a9e6fb4e!2sR.%20Joaquim%20Norberto%2C%2044%20-%20Cavalcanti%2C%20Rio%20de%20Janeiro%20-%20RJ%2C%2021370-130!5e0!3m2!1spt-BR!2sbr!4v1716901844222!5m2!1spt-BR!2sbr"
+              width="100%"
+              height="100%"
+              style={{ border: 0 }}
+              allowFullScreen={false}
+              loading="lazy"
               referrerPolicy="no-referrer-when-downgrade"
               className="absolute inset-0 w-full h-full"
             ></iframe>
@@ -863,25 +863,25 @@ function Footer({ ready }: { ready: boolean }) {
       <div className="max-w-7xl mx-auto px-6 flex flex-col items-center text-center relative z-10">
         <div style={getAnimStyle(0)}>
           <span className="tracking-[0.3em] uppercase text-xs font-semibold block mb-6 text-transparent bg-clip-text bg-gradient-to-r from-[#F3E5AB] via-[#D4AF37] to-[#FFF1BA] animate-shimmer" style={{ backgroundSize: '200% auto' }}>O momento é agora</span>
-          <h2 className="font-serif text-white text-5xl md:text-7xl mb-12">Pronta para transformar<br/><span className="italic text-transparent bg-clip-text bg-gradient-to-r from-[#F3E5AB] via-[#D4AF37] to-[#FFF1BA] animate-shimmer" style={{ backgroundSize: '200% auto' }}>seu olhar?</span></h2>
-          
-          <a 
-            href="https://anna-beauty.vercel.app/"
+          <h2 className="font-serif text-white text-5xl md:text-7xl mb-12">Pronta para transformar<br /><span className="italic text-transparent bg-clip-text bg-gradient-to-r from-[#F3E5AB] via-[#D4AF37] to-[#FFF1BA] animate-shimmer" style={{ backgroundSize: '200% auto' }}>seu olhar?</span></h2>
+
+          <a
+            href="https://api.whatsapp.com/send?phone=5521992279722&text=Ol%C3%A1!%20Gostaria%20de%20agendar%20um%20hor%C3%A1rio%20na%20Anna%20Beauty."
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-block px-12 py-5 bg-gradient-to-r from-[#F3E5AB] via-[#D4AF37] to-[#F3E5AB] animate-shimmer text-lux-darker rounded-full text-sm font-bold tracking-widest uppercase hover:shadow-[0_0_40px_rgba(243,229,171,0.4)] hover:scale-105 transition-all duration-500 mb-24" 
+            className="inline-block px-12 py-5 bg-gradient-to-r from-[#F3E5AB] via-[#D4AF37] to-[#F3E5AB] animate-shimmer text-lux-darker rounded-full text-sm font-bold tracking-widest uppercase hover:shadow-[0_0_40px_rgba(243,229,171,0.4)] hover:scale-105 transition-all duration-500 mb-24"
             style={{ backgroundSize: '200% auto' }}
           >
             Agende aqui
           </a>
         </div>
-        
+
         {/* Contact info grid */}
         <div className="w-full grid grid-cols-1 md:grid-cols-3 gap-12 py-16 border-y border-lux-gold/20 text-white/80 text-sm leading-relaxed mb-12" style={getAnimStyle(1)}>
           <div className="flex flex-col items-center">
             <h4 className="font-serif text-lux-gold text-lg mb-3 tracking-wider">Contato</h4>
             <a href="https://wa.me/5521992279722?text=Olá!%20Quero%20mais%20informações%20ou%20ajuda." target="_blank" rel="noopener noreferrer" className="hover:text-lux-goldLight transition-colors font-light text-base flex items-center gap-2">
-              <svg className="w-4 h-4 text-lux-gold" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z"/></svg>
+              <svg className="w-4 h-4 text-lux-gold" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z" /></svg>
               (21) 99227-9722
             </a>
           </div>
@@ -895,7 +895,7 @@ function Footer({ ready }: { ready: boolean }) {
           <div className="flex flex-col items-center">
             <h4 className="font-serif text-lux-gold text-lg mb-3 tracking-wider">Rede Social</h4>
             <a href="https://instagram.com/aannabeauty__" target="_blank" rel="noopener noreferrer" className="hover:text-lux-goldLight transition-colors font-light text-base flex items-center gap-2">
-              <svg className="w-5 h-5 text-lux-gold" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z"/></svg>
+              <svg className="w-5 h-5 text-lux-gold" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z" /></svg>
               @aannabeauty__
             </a>
           </div>
