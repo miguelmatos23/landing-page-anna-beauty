@@ -6,10 +6,8 @@ const WA_RECICLA = 'https://api.whatsapp.com/send?phone=5521992279722&text=Ol%C3
 
 // ─── DATES ────────────────────────────────────────────────────────────────────
 const COURSE_DATES_METODO = [
-  { days: '20 e 21', month: 'Julho' },
-  { days: '23 e 24', month: 'Julho' },
-  { days: '27 e 28', month: 'Julho' },
-  { days: '30 e 31', month: 'Julho' },
+  { days: '27 e 28', month: 'Julho', date: '2026-07-27T08:00:00-03:00' },
+  { days: '30 e 31', month: 'Julho', date: '2026-07-30T08:00:00-03:00' },
 ];
 const COURSE_DATES_RECICLA = [
   { days: '01 e 02', month: 'Agosto' },
@@ -98,7 +96,19 @@ function SectionLabel({ children }: { children: React.ReactNode }) {
 
 // ── HERO ─────────────────────────────────────────────────────────────────────
 function HeroSection() {
-  const target = new Date('2026-07-20T08:00:00-03:00');
+  const getNextDate = () => {
+    const now = Date.now();
+    for (const course of COURSE_DATES_METODO) {
+      const courseDate = new Date(course.date).getTime();
+      if (courseDate > now) {
+        return new Date(course.date);
+      }
+    }
+    // Caso todas as datas já tenham passado, mantém a última como fallback
+    return new Date(COURSE_DATES_METODO[COURSE_DATES_METODO.length - 1].date);
+  };
+
+  const target = getNextDate();
   const { days, hours, minutes, seconds } = useCountdown(target);
 
   return (
